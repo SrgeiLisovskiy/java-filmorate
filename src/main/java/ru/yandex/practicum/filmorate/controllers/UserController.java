@@ -16,7 +16,7 @@ import java.util.List;
 @Slf4j
 public class UserController {
     private int id = 0;
-    HashMap<Integer, User> users = new HashMap<>();
+    private HashMap<Integer, User> users = new HashMap<>();
 
     @GetMapping
     public List<User> getUsers() {
@@ -24,8 +24,8 @@ public class UserController {
     }
 
     @PostMapping
-    public User addUser(@Valid @RequestBody User user) throws ValidationException {
-        if (ValidationUsers(user)) {
+    public User addUser(@Valid @RequestBody User user) {
+        if (validationUsers(user)) {
             if (user.getName() == null || user.getName().isBlank()) {
                 user.setName(user.getLogin());
             }
@@ -37,9 +37,9 @@ public class UserController {
     }
 
     @PutMapping
-    public User updateUser(@Valid @RequestBody User user) throws ValidationException {
+    public User updateUser(@Valid @RequestBody User user) {
         if (users.containsKey(user.getId())) {
-            if (ValidationUsers(user)) {
+            if (validationUsers(user)) {
                 User user1 = users.get(user.getId());
                 user1.setBirthday(user.getBirthday());
                 user1.setLogin(user.getLogin());
@@ -54,7 +54,7 @@ public class UserController {
         return users.get(user.getId());
     }
 
-    private boolean ValidationUsers(User user) throws ValidationException {
+    private boolean validationUsers(User user) {
         if (user.getEmail().isBlank() || !user.getEmail().contains("@")) {
             log.error("Электронная почта не может быть пустой и должна содержать символ @: {}", user);
             throw new ValidationException("Электронная почта не может быть пустой и должна содержать символ @");
@@ -68,5 +68,9 @@ public class UserController {
             throw new ValidationException("Дата рождения не может быть в будущем");
         }
         return true;
+    }
+
+    public void setUsers(HashMap<Integer, User> users) {
+        this.users = users;
     }
 }

@@ -18,7 +18,7 @@ import java.util.List;
 @Slf4j
 class FilmController {
     private int id = 0;
-    HashMap<Integer, Film> films = new HashMap<>();
+    private HashMap<Integer, Film> films = new HashMap<>();
     public static final LocalDate VALID_RELEASE_DATE = LocalDate.of(1895, 12, 28);
 
     @GetMapping
@@ -27,7 +27,7 @@ class FilmController {
     }
 
     @PostMapping
-    public Film addFilm(@NotNull @Valid @RequestBody Film film) throws ValidationException {
+    public Film addFilm(@NotNull @Valid @RequestBody Film film) {
         if (validationFilm(film)) {
             film.setId(++id);
             log.info("Фильм добавлен: {}", film);
@@ -37,7 +37,7 @@ class FilmController {
     }
 
     @PutMapping
-    public Film updateFilm(@Valid @RequestBody Film film) throws ValidationException {
+    public Film updateFilm(@Valid @RequestBody Film film) {
         if (films.containsKey(film.getId())) {
             if (validationFilm(film)) {
                 Film film1 = films.get(film.getId());
@@ -54,7 +54,7 @@ class FilmController {
         return films.get(film.getId());
     }
 
-    private boolean validationFilm(Film film) throws ValidationException {
+    private boolean validationFilm(Film film) {
         if (film.getDuration() < 0) {
             log.error("Отрицательная продолжительность фильма: {}", film);
             throw new ValidationException("Отрицательная продолжительность фильма");
@@ -75,4 +75,7 @@ class FilmController {
         return true;
     }
 
+    public void setFilms(HashMap<Integer, Film> films) {
+        this.films = films;
+    }
 }

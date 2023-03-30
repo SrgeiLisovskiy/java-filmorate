@@ -19,7 +19,7 @@ class FilmControllerTest {
 
 
     @Test
-    void addFilmNoName() throws ValidationException {
+    void addFilmNoName() {
         controller.films.clear();
         assertThat(controller).isNotNull();
         assertNotNull(controller.films);
@@ -36,7 +36,7 @@ class FilmControllerTest {
 
 
     @Test
-    void addFilmNoNegativeDuration() throws ValidationException {
+    void addFilmNoNegativeDuration() {
         controller.films.clear();
         assertThat(controller).isNotNull();
         assertNotNull(controller.films);
@@ -52,7 +52,7 @@ class FilmControllerTest {
     }
 
     @Test
-    void addFilmReleaseDate() throws ValidationException {
+    void addFilmReleaseDate() {
         controller.films.clear();
         assertThat(controller).isNotNull();
         assertNotNull(controller.films);
@@ -68,25 +68,14 @@ class FilmControllerTest {
     }
 
     @Test
-    void addFilmDescriptionMaxSize200() throws ValidationException {
+    void addFilmDescriptionMaxSize200() {
         controller.films.clear();
         assertThat(controller).isNotNull();
         assertNotNull(controller.films);
         Film film = Film.builder().name("test").releaseDate(LocalDate.now()).description("Test film").duration(50).build();
         controller.addFilm(film);
         assertEquals(1, controller.films.size());
-        Film film2 = Film.builder().name("test2").releaseDate(LocalDate.now()).description("Валидация\n" +
-                "Проверьте данные, которые приходят в запросе на добавление нового фильма или пользователя. Эти данные должны соответствовать определённым критериям. \n" +
-                "Для Film:\n" +
-                "название не может быть пустым;\n" +
-                "максимальная длина описания — 200 символов;\n" +
-                "дата релиза — не раньше 28 декабря 1895 года;\n" +
-                "продолжительность фильма должна быть положительной.\n" +
-                "Для User:\n" +
-                "электронная почта не может быть пустой и должна содержать символ @;\n" +
-                "логин не может быть пустым и содержать пробелы;\n" +
-                "имя для отображения может быть пустым — в таком случае будет использован логин;\n" +
-                "дата рождения не может быть в будущем.").duration(50).build();
+        Film film2 = Film.builder().name("test2").releaseDate(LocalDate.now()).description("1".repeat(201)).duration(50).build();
         Throwable thrown = assertThrows(ValidationException.class, () -> {
             controller.addFilm(film2);
         });
@@ -96,7 +85,7 @@ class FilmControllerTest {
 
 
     @Test
-    void updateFilmNoName() throws ValidationException {
+    void updateFilmNoName() {
         controller.films.clear();
         assertThat(controller).isNotNull();
         assertNotNull(controller.films);
@@ -113,7 +102,7 @@ class FilmControllerTest {
 
 
     @Test
-    void updateFilmNoNegativeDuration() throws ValidationException {
+    void updateFilmNoNegativeDuration() {
         controller.films.clear();
         assertThat(controller).isNotNull();
         assertNotNull(controller.films);
@@ -129,7 +118,7 @@ class FilmControllerTest {
     }
 
     @Test
-    void updateFilmReleaseDate() throws ValidationException {
+    void updateFilmReleaseDate() {
         controller.films.clear();
         assertThat(controller).isNotNull();
         assertNotNull(controller.films);
@@ -145,25 +134,14 @@ class FilmControllerTest {
     }
 
     @Test
-    void updateFilmDescriptionMaxSize200() throws ValidationException {
+    void updateFilmDescriptionMaxSize200() {
         controller.films.clear();
         assertThat(controller).isNotNull();
         assertNotNull(controller.films);
         Film film = Film.builder().name("test").releaseDate(LocalDate.now()).description("Test film").duration(50).build();
         controller.addFilm(film);
         assertEquals(1, controller.films.size());
-        Film film2 = Film.builder().id(film.getId()).name("test2").releaseDate(LocalDate.now()).description("Валидация\n" +
-                "Проверьте данные, которые приходят в запросе на добавление нового фильма или пользователя. Эти данные должны соответствовать определённым критериям. \n" +
-                "Для Film:\n" +
-                "название не может быть пустым;\n" +
-                "максимальная длина описания — 200 символов;\n" +
-                "дата релиза — не раньше 28 декабря 1895 года;\n" +
-                "продолжительность фильма должна быть положительной.\n" +
-                "Для User:\n" +
-                "электронная почта не может быть пустой и должна содержать символ @;\n" +
-                "логин не может быть пустым и содержать пробелы;\n" +
-                "имя для отображения может быть пустым — в таком случае будет использован логин;\n" +
-                "дата рождения не может быть в будущем.").duration(50).build();
+        Film film2 = Film.builder().id(film.getId()).name("test2").releaseDate(LocalDate.now()).description("1".repeat(201)).duration(50).build();
         Throwable thrown = assertThrows(ValidationException.class, () -> {
             controller.updateFilm(film2);
         });
@@ -172,7 +150,7 @@ class FilmControllerTest {
     }
 
     @Test
-    void getFilms() throws ValidationException {
+    void getFilms() {
         controller.films.clear();
         assertThat(controller).isNotNull();
         assertNotNull(controller.films);

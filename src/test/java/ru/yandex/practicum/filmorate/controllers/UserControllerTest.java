@@ -18,7 +18,7 @@ class UserControllerTest {
 
 
     @Test
-    void addUserNoLoginAndNull() throws ValidationException {
+    void addUserNoLoginAndNull() {
         controller.users.clear();
         assertThat(controller).isNotNull();
         assertNotNull(controller.users);
@@ -40,7 +40,7 @@ class UserControllerTest {
     }
 
     @Test
-    void addUserCheckMail() throws ValidationException {
+    void addUserCheckMail() {
         controller.users.clear();
         assertThat(controller).isNotNull();
         assertNotNull(controller.users);
@@ -62,7 +62,7 @@ class UserControllerTest {
     }
 
     @Test
-    void addUserNoName() throws ValidationException {
+    void addUserNoName() {
         controller.users.clear();
         assertThat(controller).isNotNull();
         assertNotNull(controller.users);
@@ -75,7 +75,7 @@ class UserControllerTest {
     }
 
     @Test
-    void addUserCheckBirthday() throws ValidationException {
+    void addUserCheckBirthday() {
         controller.users.clear();
         assertThat(controller).isNotNull();
         assertNotNull(controller.users);
@@ -91,7 +91,7 @@ class UserControllerTest {
     }
 
     @Test
-    void updateUserNoLoginAndNull() throws ValidationException {
+    void updateUserNoLoginAndNull() {
         controller.users.clear();
         assertThat(controller).isNotNull();
         assertNotNull(controller.users);
@@ -113,7 +113,7 @@ class UserControllerTest {
     }
 
     @Test
-    void updateUserCheckMail() throws ValidationException {
+    void updateUserCheckMail() {
         controller.users.clear();
         assertThat(controller).isNotNull();
         assertNotNull(controller.users);
@@ -135,7 +135,7 @@ class UserControllerTest {
     }
 
     @Test
-    void updateUserNoName() throws ValidationException {
+    void updateUserNoName() {
         controller.users.clear();
         assertThat(controller).isNotNull();
         assertNotNull(controller.users);
@@ -149,7 +149,7 @@ class UserControllerTest {
     }
 
     @Test
-    void updateUserCheckBirthday() throws ValidationException {
+    void updateUserCheckBirthday() {
         controller.users.clear();
         assertThat(controller).isNotNull();
         assertNotNull(controller.users);
