@@ -74,7 +74,12 @@
 			<artifactId>advancedcontroller-spring-boot-starter</artifactId>
 			<version>0.0.1</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>backport-util-concurrent</groupId>
+            <artifactId>backport-util-concurrent</artifactId>
+            <version>3.1</version>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>
