@@ -75,6 +75,7 @@ public class InMemoryUserStorage implements UserStorage {
         this.users = users;
     }
 
+    @Override
     public HashMap<Long, User> getUsers() {
         return users;
     }

@@ -50,27 +50,33 @@ public class UserService {
     }
 
     public void addFriends(long id, long friendId) {
-        if (id > 0 && friendId > 0) {
-            userStorage.getUsers().get(id).getFriends().add(friendId);
+        if (!userStorage.getUsers().containsKey(id)) {
+            throw new UserNotFoundException("Введен не верный ID=" + id);
+        } else if (!userStorage.getUsers().containsKey(friendId)) {
+            throw new UserNotFoundException("Введен не верный ID=" + friendId);
+        }
+        userStorage.getUsers().get(id).getFriends().add(friendId);
             userStorage.getUsers().get(friendId).getFriends().add(id);
             log.info("Пользователи с ID {} и {} теперь друзья", id, friendId);
-
-        } else
-            throw new UserNotFoundException("Введен не верный ID");
     }
 
     public void deleteFriends(long id, long friendId) {
-        if (id > 0 && friendId > 0) {
+        if (!userStorage.getUsers().containsKey(id)) {
+            throw new UserNotFoundException("Введен не верный ID=" + id);
+        } else if (!userStorage.getUsers().containsKey(friendId)) {
+            throw new UserNotFoundException("Введен не верный ID=" + friendId);
+        }
             userStorage.getUsers().get(id).getFriends().remove(friendId);
             userStorage.getUsers().get(friendId).getFriends().remove(id);
-        } else
-            throw new UserNotFoundException("Введен не верный ID");
-
     }
 
     public List<User> commonFriend(long id, long friendId) {
         List<User> commonFriend = new ArrayList<>();
-        if (id > 0 && friendId > 0) {
+        if (!userStorage.getUsers().containsKey(id)) {
+            throw new UserNotFoundException("Введен не верный ID=" + id);
+        } else if (!userStorage.getUsers().containsKey(friendId)) {
+            throw new UserNotFoundException("Введен не верный ID=" + friendId);
+        }
             Set<Long> usersId = userStorage.getUsers().get(id).getFriends();
             Set<Long> usersFriendId = userStorage.getUsers().get(friendId).getFriends();
             usersId.forEach(h -> {
@@ -79,9 +85,6 @@ public class UserService {
                         }
                     }
             );
-        } else
-            throw new ValidationException("Введен не верный ID");
-
         return commonFriend;
     }
 

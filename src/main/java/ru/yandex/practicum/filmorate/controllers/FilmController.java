@@ -20,7 +20,7 @@ class FilmController {
     private InMemoryFilmStorage filmStorage;
 
     @Autowired
-    FilmService filmService;
+    private FilmService filmService;
 
     @GetMapping
     public List<Film> getFilms() {
@@ -59,7 +59,7 @@ class FilmController {
     }
 
     @GetMapping("/popular")
-    public List<Film> getPopularFilms(@RequestParam(value = "count", defaultValue = "10", required = false) int count) {
+    public List<Film> getPopularFilms(@RequestParam(value = "count", defaultValue = "10") int count) {
         log.debug("Получен запрос GET /films/popular");
         return filmService.getPopularFilms(count);
     }
