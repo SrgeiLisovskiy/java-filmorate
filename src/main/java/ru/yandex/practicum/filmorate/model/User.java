@@ -7,11 +7,13 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
 import java.time.LocalDate;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Data
-@Builder
+
 public class User {
-    private int id;
+    private long id;
     @NotBlank(message = "Электронная почта не может быть пустой и должна содержать символ @")
     @Email(message = "Неверный Email")
     private String email;
@@ -20,5 +22,15 @@ public class User {
     private String name;
     @Past(message = "Дата рождения не может быть в будущем")
     private LocalDate birthday;
+    private Set<Long> friends;
 
+    @Builder
+    public User(long id, String email, String login, String name, LocalDate birthday) {
+        this.id = id;
+        this.email = email;
+        this.login = login;
+        this.name = name;
+        this.birthday = birthday;
+        this.friends = new TreeSet<>();
+    }
 }
