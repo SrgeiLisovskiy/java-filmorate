@@ -34,9 +34,10 @@ WHERE user_id IN (SELECT friend_id FROM friendship WHERE user_id = ?);
 
 Получение списка из наиболее популярных фильмов:
  ``` 
- SELECT f.film_id, film_name, description, release_date, duration, mpa_rate_id FROM films AS f
-LEFT JOIN films_likes AS fl ON f.film_id = fl.film_id
-GROUP BY f.film_id
+ SELECT id, name, description, release_date, duration, mpa_id 
+ FROM films AS f
+JOIN likes AS fl ON f.id = fl.film_id
+GROUP BY f.id
 ORDER BY COUNT(fl.user_id) DESC
 LIMIT ? 
  ``` 
