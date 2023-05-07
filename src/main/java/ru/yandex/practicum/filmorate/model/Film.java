@@ -8,10 +8,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 @Data
+@Builder
 public class Film {
     private long id;
     @NotBlank(message = "Название не может быть пустым")
@@ -24,15 +25,17 @@ public class Film {
     @NotNull
     private int duration;
     private Set<Long> like;
+    private List<Genre> genres;
+    private Mpa mpa;
 
 
-    @Builder
-    public Film(long id, String name, String description, LocalDate releaseDate, int duration) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.releaseDate = releaseDate;
-        this.duration = duration;
-        this.like = new TreeSet<>();
-    }
+
+//    public Film(long id, String name, String description, LocalDate releaseDate, int duration) {
+//        this.id = id;
+//        this.name = name;
+//        this.description = description;
+//        this.releaseDate = releaseDate;
+//        this.duration = duration;
+//        this.like = new TreeSet<>();
+//    }
 }

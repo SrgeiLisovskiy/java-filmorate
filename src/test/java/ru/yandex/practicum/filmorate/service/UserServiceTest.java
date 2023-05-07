@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import ru.yandex.practicum.filmorate.model.FriendshipStatus;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 
@@ -52,10 +53,10 @@ class UserServiceTest {
         userService.addUser(user2);
         assertThat(userService.getFriendUserId(1)).isNotNull();
         userService.addFriends(1, 2);
-        userService.addFriends(1, 3);
-        assertEquals(userService.getFriendUserId(1).size(), 2);
-        assertEquals(userService.getFriendUserId(2).size(), 1);
-        assertEquals(userService.getFriendUserId(3).size(), 1);
+        assertEquals(userService.getUserByID(1).getStatus(2), FriendshipStatus.NOTCONFIRMED);
+        userService.addFriends(2, 1);
+        assertEquals(userService.getUserByID(1).getStatus(2), FriendshipStatus.CONFIRMED);
+        assertEquals(userService.getUserByID(2).getStatus(1), FriendshipStatus.CONFIRMED);
     }
 
     @Test
@@ -68,11 +69,12 @@ class UserServiceTest {
         userService.addUser(user2);
         assertThat(userService.getFriendUserId(1)).isNotNull();
         userService.addFriends(1, 2);
-        userService.addFriends(1, 3);
-        assertEquals(userService.getFriendUserId(1).size(), 2);
-        userService.deleteFriends(1, 3);
-        assertEquals(userService.getFriendUserId(1).size(), 1);
-        assertThat(userService.getFriendUserId(3)).isNotNull();
+        userService.addFriends(2, 1);
+        assertEquals(userService.getUserByID(1).getStatus(2), FriendshipStatus.CONFIRMED);
+        assertEquals(userService.getUserByID(2).getStatus(1), FriendshipStatus.CONFIRMED);
+        userService.deleteFriends(1, 2);
+        assertThat(userService.getFriendUserId(1)).isNotNull();
+        assertEquals(userService.getUserByID(2).getStatus(1), FriendshipStatus.NOTCONFIRMED);
     }
 
     @Test

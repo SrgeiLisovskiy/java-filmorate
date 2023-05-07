@@ -53,6 +53,10 @@ public class InMemoryUserStorage implements UserStorage {
         }
         return users.get(user.getId());
     }
+    public void updateFriendshipStatus(long id ){
+
+    }
+  
 
     private boolean validationUsers(User user) {
         if (user.getEmail().isBlank() || !user.getEmail().contains("@")) {
