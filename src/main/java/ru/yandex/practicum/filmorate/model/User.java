@@ -22,7 +22,7 @@ public class User {
     private String name;
     @Past(message = "Дата рождения не может быть в будущем")
     private LocalDate birthday;
-    private Map<Long,FriendshipStatus> friends;
+    private Map<Long, FriendshipStatus> friends;
 
     @Builder
     public User(long id, String email, String login, String name, LocalDate birthday) {
@@ -33,7 +33,8 @@ public class User {
         this.birthday = birthday;
         this.friends = new HashMap<>();
     }
-    public FriendshipStatus getStatus(long id){
+
+    public FriendshipStatus getStatus(long id) {
         return friends.get(id);
     }
 

@@ -42,7 +42,7 @@ public class UserService {
     public List<User> getFriendUserId(long id) {
         if (userStorage.getUsers().containsKey(id)) {
             List<User> friendUser = new ArrayList<>();
-            userStorage.getUsers().get(id).getFriends().forEach((h,g)->friendUser.add(userStorage.getUsers().get(h)));
+            userStorage.getUsers().get(id).getFriends().forEach((h, g) -> friendUser.add(userStorage.getUsers().get(h)));
             return friendUser;
         } else
             throw new UserNotFoundException("Проверти введенный ID");
@@ -72,7 +72,7 @@ public class UserService {
         } else if (!userStorage.getUsers().containsKey(friendId)) {
             throw new UserNotFoundException("Введен не верный ID=" + friendId);
         }
-            userStorage.getUsers().get(id).getFriends().remove(friendId);
+        userStorage.getUsers().get(id).getFriends().remove(friendId);
         if (userStorage.getUsers().get(friendId).getFriends().containsKey(id)) {
             userStorage.getUsers().get(friendId).getFriends().put(id, FriendshipStatus.NOTCONFIRMED);
         }
@@ -85,16 +85,16 @@ public class UserService {
         } else if (!userStorage.getUsers().containsKey(friendId)) {
             throw new UserNotFoundException("Введен не верный ID=" + friendId);
         }
-            Set<Long> usersId = new TreeSet<>();
-        userStorage.getUsers().get(id).getFriends().forEach(((h,g)->usersId.add(h)));
-            Set<Long> usersFriendId = new TreeSet<>();
-            userStorage.getUsers().get(friendId).getFriends().forEach((h,g)->usersFriendId.add(h));
-            usersId.forEach(h -> {
-                        if (usersFriendId.contains(h)) {
-                            commonFriend.add(userStorage.getUsers().get(h));
-                        }
+        Set<Long> usersId = new TreeSet<>();
+        userStorage.getUsers().get(id).getFriends().forEach(((h, g) -> usersId.add(h)));
+        Set<Long> usersFriendId = new TreeSet<>();
+        userStorage.getUsers().get(friendId).getFriends().forEach((h, g) -> usersFriendId.add(h));
+        usersId.forEach(h -> {
+                    if (usersFriendId.contains(h)) {
+                        commonFriend.add(userStorage.getUsers().get(h));
                     }
-            );
+                }
+        );
         return commonFriend;
     }
 
