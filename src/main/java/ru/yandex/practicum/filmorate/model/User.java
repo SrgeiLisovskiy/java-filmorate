@@ -7,8 +7,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
 import java.time.LocalDate;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.HashMap;
+import java.util.Map;
 
 @Data
 
@@ -22,7 +22,7 @@ public class User {
     private String name;
     @Past(message = "Дата рождения не может быть в будущем")
     private LocalDate birthday;
-    private Set<Long> friends;
+    private Map<Long, FriendshipStatus> friends;
 
     @Builder
     public User(long id, String email, String login, String name, LocalDate birthday) {
@@ -31,6 +31,11 @@ public class User {
         this.login = login;
         this.name = name;
         this.birthday = birthday;
-        this.friends = new TreeSet<>();
+        this.friends = new HashMap<>();
     }
+
+    public FriendshipStatus getStatus(long id) {
+        return friends.get(id);
+    }
+
 }

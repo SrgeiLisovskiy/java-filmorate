@@ -5,13 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
+import ru.yandex.practicum.filmorate.model.FriendshipStatus;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -43,7 +42,7 @@ public class UserService {
     public List<User> getFriendUserId(long id) {
         if (userStorage.getUsers().containsKey(id)) {
             List<User> friendUser = new ArrayList<>();
-            userStorage.getUsers().get(id).getFriends().stream().forEach(h -> friendUser.add(userStorage.getUsers().get(h)));
+            userStorage.getUsers().get(id).getFriends().forEach((h, g) -> friendUser.add(userStorage.getUsers().get(h)));
             return friendUser;
         } else
             throw new UserNotFoundException("Проверти введенный ID");
@@ -55,10 +54,17 @@ public class UserService {
         } else if (!userStorage.getUsers().containsKey(friendId)) {
             throw new UserNotFoundException("Введен не верный ID=" + friendId);
         }
-        userStorage.getUsers().get(id).getFriends().add(friendId);
-            userStorage.getUsers().get(friendId).getFriends().add(id);
-            log.info("Пользователи с ID {} и {} теперь друзья", id, friendId);
+        if (userStorage.getUsers().get(friendId).getFriends().containsKey(id)) {
+            Map<Long, FriendshipStatus> friends = userStorage.getUsers().get(id).getFriends();
+            friends.put(friendId, FriendshipStatus.CONFIRMED);
+            Map<Long, FriendshipStatus> friendFriends = userStorage.getUsers().get(friendId).getFriends();
+            friendFriends.put(id, FriendshipStatus.CONFIRMED);
+
+        } else {
+            userStorage.getUsers().get(id).getFriends().put(friendId, FriendshipStatus.NOTCONFIRMED);
+        }
     }
+
 
     public void deleteFriends(long id, long friendId) {
         if (!userStorage.getUsers().containsKey(id)) {
@@ -66,8 +72,10 @@ public class UserService {
         } else if (!userStorage.getUsers().containsKey(friendId)) {
             throw new UserNotFoundException("Введен не верный ID=" + friendId);
         }
-            userStorage.getUsers().get(id).getFriends().remove(friendId);
-            userStorage.getUsers().get(friendId).getFriends().remove(id);
+        userStorage.getUsers().get(id).getFriends().remove(friendId);
+        if (userStorage.getUsers().get(friendId).getFriends().containsKey(id)) {
+            userStorage.getUsers().get(friendId).getFriends().put(id, FriendshipStatus.NOTCONFIRMED);
+        }
     }
 
     public List<User> commonFriend(long id, long friendId) {
@@ -77,14 +85,16 @@ public class UserService {
         } else if (!userStorage.getUsers().containsKey(friendId)) {
             throw new UserNotFoundException("Введен не верный ID=" + friendId);
         }
-            Set<Long> usersId = userStorage.getUsers().get(id).getFriends();
-            Set<Long> usersFriendId = userStorage.getUsers().get(friendId).getFriends();
-            usersId.forEach(h -> {
-                        if (usersFriendId.contains(h)) {
-                            commonFriend.add(userStorage.getUsers().get(h));
-                        }
+        Set<Long> usersId = new TreeSet<>();
+        userStorage.getUsers().get(id).getFriends().forEach(((h, g) -> usersId.add(h)));
+        Set<Long> usersFriendId = new TreeSet<>();
+        userStorage.getUsers().get(friendId).getFriends().forEach((h, g) -> usersFriendId.add(h));
+        usersId.forEach(h -> {
+                    if (usersFriendId.contains(h)) {
+                        commonFriend.add(userStorage.getUsers().get(h));
                     }
-            );
+                }
+        );
         return commonFriend;
     }
 
