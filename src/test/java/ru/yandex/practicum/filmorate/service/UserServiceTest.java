@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 
 import java.time.LocalDate;
 
@@ -15,17 +14,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class UserServiceTest {
     @Autowired
     UserService userService;
-    @Autowired
-    InMemoryUserStorage inMemoryUserStorage;
+
 
 
     @Test
     void getUserByID() {
-        assertThat(inMemoryUserStorage.getUsers()).isNotNull();
+        assertThat(userService.getListUsers()).isNotNull();
         User user = User.builder().name("TestName").birthday(LocalDate.of(1999, 1, 21)).login("Testlogin").email("lis@mail.ru").build();
         userService.addUser(user);
-        assertEquals(inMemoryUserStorage.getUsers().size(), 1);
-        assertEquals(inMemoryUserStorage.getUsers().get(user.getId()), user);
+        assertEquals(userService.getListUsers().size(), 1);
+        assertEquals(userService.getListUsers().get((int) user.getId()), user);
     }
 
     @Test

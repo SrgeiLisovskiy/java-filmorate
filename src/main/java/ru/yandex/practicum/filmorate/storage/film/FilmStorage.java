@@ -4,9 +4,7 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.HashMap;
 import java.util.List;
 
 @Component
@@ -17,7 +15,8 @@ public interface FilmStorage {
 
     List<Film> getListFilms();
 
-    void setFilms(@NotBlank HashMap<Long, Film> films);
+    void deleteFilm(Long id);
 
-    HashMap<Long, Film> getFilms();
+
+    Film getFilm(Long id);
 }

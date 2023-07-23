@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
 
 import java.time.LocalDate;
 
@@ -16,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class FilmControllerTest {
 
     @Autowired
-    private InMemoryFilmStorage controller;
+    private FilmController controller;
 
 
     @Test
