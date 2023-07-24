@@ -20,12 +20,14 @@ public class MpaController {
     private final MpaService mpaService;
 
     @GetMapping
-    public List<Mpa> findAll() {
+    public List<Mpa> findAll(){
+        log.debug("Получен запрос GET /mpa");
         return mpaService.getAllMpa();
     }
 
     @GetMapping("/{id}")
-    public Mpa findById(@PathVariable Long id) {
+    public Mpa findById(@PathVariable Long id){
+        log.debug("Получен запрос GET /mpa/{id}");
         return mpaService.getByID(id);
     }
 

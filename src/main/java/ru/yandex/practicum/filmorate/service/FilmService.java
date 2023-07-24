@@ -5,14 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
-import ru.yandex.practicum.filmorate.storage.like.LikeStorage;
+import ru.yandex.practicum.filmorate.storage.genre.GenreStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserDbStorage;
 import ru.yandex.practicum.filmorate.vadators.ValidatorFilm;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,19 +21,30 @@ import java.util.stream.Collectors;
 public class FilmService {
 
     private final FilmStorage filmStorage;
-    private final MpaService mpaService;
     private final UserDbStorage userStorage;
-    private final LikeStorage likeStorage;
+    private final GenreStorage genreStorage;
 
     public Film addFilm(Film film) {
         ValidatorFilm.validationFilm(film);
+        filmStorage.addFilm(film);
         log.info("Фильм добавлен: {}", film);
-        return filmStorage.addFilm(film);
+        return getFilmByID(film.getId());
     }
 
     public Film updateFilm(Film film) {
         ValidatorFilm.validationFilm(film);
         getFilmByID(film.getId());
+        if (film.getGenres() != null) {
+            Collection<Genre> genres = film.getGenres().stream()
+                    .sorted(Comparator.comparing(Genre::getId))
+                    .collect(Collectors.toList());
+            film.setGenres(new LinkedHashSet<>(genres));
+            for (Genre genre : film.getGenres()) {
+                genre.setName(genreStorage.getByID(genre.getId()).getName());
+            }
+        }
+        filmStorage.deleteGenre(film);
+        filmStorage.addGenre(film);
         log.info("Фильм обновлен: {}", film);
         return filmStorage.updateFilm(film);
     }
@@ -47,7 +58,7 @@ public class FilmService {
         Film film = filmStorage.getFilm(filmId);
         User user = userStorage.getUserByID(userId);
         if (user != null && film != null) {
-            likeStorage.addLike(filmId, userId);
+            filmStorage.addLike(filmId, userId);
             log.info("Пользователь с ID = {} поставил лайк фильму с ID = {}", userId, filmId);
         }
     }
@@ -58,12 +69,12 @@ public class FilmService {
     }
 
     public List<Film> getAllPopular(Integer count) {
-        return likeStorage.getAllPopular(count);
+        return filmStorage.getAllPopular(count);
     }
 
 
     public List<Long> getLikes(Long filmId) {
-        return likeStorage.getLikes(filmId);
+        return filmStorage.getLikes(filmId);
     }
 
     public void deleteLike(long id, long userId) {
@@ -73,7 +84,7 @@ public class FilmService {
             throw new NotFoundException("Не верный ID пользователя =" + userId);
         }
         log.info("Лайк пользователя с ID= {} удалён с фильма с ID= {}", userId, id);
-        likeStorage.deleteLike(id, userId);
+        filmStorage.deleteLike(id, userId);
     }
 
     public List<Film> getListFilms() {

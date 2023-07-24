@@ -17,11 +17,13 @@ public class MpaService {
     private final MpaStorage mpaStorage;
 
     public List<Mpa> getAllMpa() {
+        log.info("Получен список всех рейтингов");
         return mpaStorage.getAllMpa();
     }
 
     public Mpa getByID(Long id) throws NotFoundException {
         if (mpaStorage.getByID(id) != null) {
+            log.info("Получен рейтинг с ID = {}",id);
             return mpaStorage.getByID(id);
         } else throw new NotFoundException("Mpa с данным id  не найден");
     }

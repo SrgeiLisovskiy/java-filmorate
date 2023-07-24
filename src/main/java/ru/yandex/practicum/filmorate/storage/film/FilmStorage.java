@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.storage.film;
 
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Genre;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -17,6 +18,19 @@ public interface FilmStorage {
 
     void deleteFilm(Long id);
 
-
     Film getFilm(Long id);
+
+    void deleteGenre(Film film);
+
+    void addGenre(Film film);
+
+    List<Genre> getFilmGenres(Long filmId);
+
+    void addLike(Long filmId, Long userId);
+
+    void deleteLike(Long filmId, Long userId);
+
+    List<Film> getAllPopular(Integer count);
+
+    List<Long> getLikes(Long filmId);
 }
