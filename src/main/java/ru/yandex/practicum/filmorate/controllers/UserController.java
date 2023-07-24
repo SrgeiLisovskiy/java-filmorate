@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.controllers;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
@@ -11,10 +11,9 @@ import java.util.List;
 @RequestMapping("/users")
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class UserController {
-
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @GetMapping
     public List<User> getUsers() {
@@ -54,9 +53,9 @@ public class UserController {
     }
 
     @PutMapping("/{id}/friends/{friendId}")
-    public void addFriend(@PathVariable Integer id, @PathVariable Integer friendId) {
-        userService.addFriends(id, friendId);
+    public User addFriend(@PathVariable Integer id, @PathVariable Integer friendId) {
         log.debug("Получен запрос PUT /users/{id}/friends/{friendId}");
+         return userService.addFriends(id, friendId);
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")

@@ -2,11 +2,10 @@ package ru.yandex.practicum.filmorate.storage.film;
 
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Genre;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.HashMap;
 import java.util.List;
 
 @Component
@@ -17,7 +16,21 @@ public interface FilmStorage {
 
     List<Film> getListFilms();
 
-    void setFilms(@NotBlank HashMap<Long, Film> films);
+    void deleteFilm(Long id);
 
-    HashMap<Long, Film> getFilms();
+    Film getFilm(Long id);
+
+    void deleteGenre(Film film);
+
+    void addGenre(Film film);
+
+    List<Genre> getFilmGenres(Long filmId);
+
+    void addLike(Long filmId, Long userId);
+
+    void deleteLike(Long filmId, Long userId);
+
+    List<Film> getAllPopular(Integer count);
+
+    List<Long> getLikes(Long filmId);
 }

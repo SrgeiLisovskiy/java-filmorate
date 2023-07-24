@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 
 import java.time.LocalDate;
 
@@ -15,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class UserControllerTest {
     @Autowired
-    private InMemoryUserStorage controller;
+    private UserController controller;
 
 
     @Test
@@ -145,7 +144,7 @@ class UserControllerTest {
         assertEquals(1, controller.getUsers().size());
         User user1 = User.builder().id(user.getId()).name("").login("testlogin").email("mail@mail.ru").birthday(LocalDate.of(1991, 2, 14)).build();
         controller.updateUser(user1);
-        assertEquals(controller.getUsers().get(user1.getId()).getName(), user1.getLogin());
+        assertEquals(controller.getUsers().get((int) user1.getId()).getName(), user1.getLogin());
         assertEquals(1, controller.getUsers().size());
     }
 
